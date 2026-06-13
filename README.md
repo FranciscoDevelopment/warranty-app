@@ -1,73 +1,40 @@
-# React + TypeScript + Vite
+# 🔖 Warranty-App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Registro de garantías de tus productos y saber cuáles siguen vigentes, cuáles están por
+vencer y cuáles ya caducaron.
 
-Currently, two official plugins are available:
+## Integrantes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Integrante | Desafío | Rama |
+|------------|---------|------|
+| Facundo Ferreyra   | D1 - Base | feature/d1-base |
+| Sin selección   | D2 - Cálculo | feature/d2-calculo |
+| Sin selección   | D3 - Clasificación visual | feature/d3-clasificacion |
+| Sin selección   | D4 - Filtros | feature/d4-filtros |
+| Sin selección   | D5 - Adjunto | feature/d5-adjunto |
 
-## React Compiler
+## Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19 · TypeScript · Vite · Zustand · Tailwind CSS v4 · React Hook Form · Zod · date-fns
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- CRUD de productos con fecha de compra y duración de garantía
+- Cálculo automático de fecha de vencimiento
+- Clasificación visual: vigente / próxima a vencer / vencida
+- Filtros por categoría, estado y búsqueda por nombre
+- Adjunto de comprobante de compra (imagen)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Links
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- 🚀 Deploy: *Pendiente*
+- 📦 Repositorio: [github.com/usuario/warranty-app](https://github.com/Facu-Ferreyra/warranty-app)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Instalación local
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/Facu-Ferreyra/warranty-app.git
+cd warranty-app
+pnpm install
+pnpm dev
 ```
