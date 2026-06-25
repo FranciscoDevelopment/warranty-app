@@ -33,7 +33,7 @@ React 19 · TypeScript · Vite · Zustand · Tailwind CSS v4 · React Hook Form 
 ## Instalación local
 
 ```bash
-git clone https://github.com/Facu-Ferreyra/warranty-app.git
+git clone https://github.com/FranciscoDevelopment/warranty-app.git
 cd warranty-app
 pnpm install
 pnpm dev
