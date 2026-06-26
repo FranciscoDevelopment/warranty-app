@@ -4,17 +4,19 @@ import type { productT } from "../products/types";
 export type warrantyTermT = "short" | "medium" | "long" ;
 
 
-export type warrantyT = {
+export const warrantyTermReturn : Record<warrantyTermT, string> = {
 
-    id : string ;
+    short: "Corto",
 
-    warrantyTerm : warrantyTermT ;
+    medium: "Medio",
 
-    expiryDate : string ;
+    long: "Largo"
 
-    remainingMonths : number ;
+} as const
 
-}
+
+export type warrantyTermLabelT = typeof warrantyTermReturn[keyof typeof warrantyTermReturn]
+
 
 
 export type warrantiesInStateT = {
@@ -27,6 +29,24 @@ export type temporalThresholdsT = Record< productT['importance'] , {
     short : number ;
     long : number
 } >
+
+
+
+
+export type warrantyT = {
+
+    id : string ;
+
+    warrantyTerm : warrantyTermT | warrantyTermLabelT;
+
+    expiryDate : string ;
+
+    remainingMonths : number ;
+
+}
+
+
+
 
 // Re-exportamos para que el store no dependa de products/types directamente
 export type {productT} ;
