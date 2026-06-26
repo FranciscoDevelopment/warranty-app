@@ -1,6 +1,6 @@
 import { addMonths, differenceInMonths, parseISO } from "date-fns"
-import type { temporalThresholdsT, warrantyTermT } from "../types"
-import type { productT } from "../types"
+import { warrantyTermReturn, type temporalThresholdsT, type warrantyTermT } from "../types"
+import type { productT, warrantyTermLabelT } from "../types"
 
 
 const PRICE_HIGH = 2000 as const
@@ -20,7 +20,7 @@ function GetPriceBonus ( price : number ) : number {
 
 
 
-export function ComputeWarrantyTerm ( product : productT, thresholds : temporalThresholdsT ) : warrantyTermT {
+export function ComputeWarrantyTerm ( product : productT, thresholds : temporalThresholdsT ) : warrantyTermLabelT{
 
     const expiry = addMonths( parseISO( product.purchaseDate ) , product.durationMonths ) ;
 
@@ -34,10 +34,10 @@ export function ComputeWarrantyTerm ( product : productT, thresholds : temporalT
     const { short, long } = thresholds[product.importance]
 
 
-    if( effective <= short ) return "short" ;
+    if( effective <= short ) return warrantyTermReturn.short ;
 
-    if( effective <= long ) return "medium" ;
+    if( effective <= long ) return warrantyTermReturn.medium ;
 
-    return "long" 
+    return warrantyTermReturn.long 
 
 }
