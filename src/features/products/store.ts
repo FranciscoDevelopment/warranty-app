@@ -29,8 +29,8 @@ export const useProductStore = create<productStoreT> ()(
                             products: [
                                 ...state.products,
                                 {
+                                    id: crypto.randomUUID(),
                                     ...data,
-                                    id: crypto.randomUUID()
                                 }
                             ]
 
@@ -68,7 +68,7 @@ export const useProductStore = create<productStoreT> ()(
             }
 
         },
-        {name: "warranty-storage"}
+        {name: "product-storage"}
 
     )
 
