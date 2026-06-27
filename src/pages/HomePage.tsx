@@ -1,3 +1,5 @@
+import ProductsTable from "../features/products/components/ProductsTable";
+
 export default function HomePage () {
 
     return(
@@ -8,6 +10,8 @@ export default function HomePage () {
             {/* Aca van los components, tales como el tablero de de los productos ,
                 como el diseño que envio Cami por Discord
             */}
+
+            <ProductsTable/>
 
         </main>    
     )

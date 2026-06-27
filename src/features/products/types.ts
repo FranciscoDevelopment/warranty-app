@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react"
+
 export type productT = {
   id?: string;
   name: string;
@@ -17,5 +19,24 @@ export type productsInStateT = {
 }
 
 
+export type importanceT = {
 
+    High : string ;
+
+    Medium : string ;
+
+    Low : string
+
+}
+
+
+export type categoriesClssificationT = {
+
+    value : string ;
+
+    label : string ;
+
+    icon : LucideIcon    
+
+}
 
