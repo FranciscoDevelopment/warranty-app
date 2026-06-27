@@ -1,11 +1,21 @@
 import { useWarrantyStore } from "../../warranty/store";
 import { useProductStore } from "../store"
+import type { importanceT } from "../types";
 
 export default function ProductsTable () {
 
     const products = useProductStore( (state) => state.products ) ;
 
     const warranties = useWarrantyStore( (state) => state.warranties ) ;
+
+
+    const importanceLabel : importanceT = {
+
+        High: "Alta",
+        Medium: "Media",
+        Low: "Baja"
+
+    }
 
 
     // Join por id
@@ -32,7 +42,7 @@ export default function ProductsTable () {
                         <th className="px-4 py-2 border">Fecha compra</th>
                         <th className="px-4 py-2 border">Vencimiento</th>
                         <th className="px-4 py-2 border">Meses restantes</th>
-                        <th className="px-4 py-2 border">Plazo</th>
+                        <th className="px-4 py-2 border max-w-26 whitespace-normal">Estimación del plazo de cobertura</th>
                     </tr>
                 </thead>
 
@@ -43,7 +53,7 @@ export default function ProductsTable () {
                             <td className="px-4 py-2 border">{row.name}</td>
                             <td className="px-4 py-2 border">{row.category}</td>
                             <td className="px-4 py-2 border">${row.price}</td>
-                            <td className="px-4 py-2 border">{row.importance}</td>
+                            <td className="px-4 py-2 border">{ importanceLabel[row.importance] }</td>
                             <td className="px-4 py-2 border">{row.purchaseDate}</td>
                             <td className="px-4 py-2 border">
                                 {row.warranty?.expiryDate
