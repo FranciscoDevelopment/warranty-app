@@ -1,5 +1,5 @@
 import type { categoriesClssificationT } from "./types";
-import { Smartphone, Zap, Wrench, Package, Shirt, Car, Settings, BookOpen, Book } from 'lucide-react'
+import { Smartphone, Zap, Wrench, Package, Shirt, Car, Settings, BookOpen, Book} from 'lucide-react'
 
 
 export const CATEGORIES : categoriesClssificationT[] = [
