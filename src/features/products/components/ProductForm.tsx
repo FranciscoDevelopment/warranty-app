@@ -3,6 +3,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { productSchema, type productFormDataT } from '../schema'
 import { useProductStore } from '../store'
 import { useWarrantyStore } from '../../warranty/store'
+import toast from 'react-hot-toast'
+import { CATEGORIES } from '../categories'
+
 
 export function ProductForm() {
   
@@ -11,9 +14,13 @@ export function ProductForm() {
     const evaluateWarranty = useWarrantyStore( (state) => state.evaluateWarranty ) ;
 
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<productFormDataT>({
+    const { register, handleSubmit, watch , reset, formState: { errors } } = useForm<productFormDataT>({
         resolver: zodResolver(productSchema),
     })
+
+    const selectedCategory = watch('category') ;
+
+    const categoryIcon = CATEGORIES.find( (category) => category.value === selectedCategory ) ;
 
     const onSubmit = (data: productFormDataT) => {
 
@@ -24,6 +31,9 @@ export function ProductForm() {
         evaluateWarranty(newProduct) ;
 
         reset()
+
+        toast.success( "Producto agregado correctamente", {duration: 3000 } )
+
     }
 
 
@@ -42,13 +52,59 @@ export function ProductForm() {
 
         <div>
             <label htmlFor="category" className="text-sm font-medium">Categoría</label>
-            <select id="category" {...register('category')} className="mt-1 w-full border rounded px-3 py-2 text-sm">
-            <option value="">Elegir categoría...</option>
-            <option value="Electrónica">Electrónica</option>
-            <option value="Electrodoméstico">Electrodoméstico</option>
-            <option value="Herramienta">Herramienta</option>
-            <option value="Otro">Otro</option>
-            </select>
+            
+            <article className='grid grid-cols-4 gap-2' >
+
+                {
+                    CATEGORIES.map( (category) => (
+
+                        <label
+                            key={category.value}
+                            className={`flex flex-col items-center gap-1 p-2 border rounded cursor-pointer text-xs font-semibold
+                                ${watch('category') === category.value ? 'border-blue-600 bg-blue-300' : 'border-slate-600'}`}
+                        >
+                        
+                            <input 
+                                type="radio"
+                                value={category.value}
+                                {...register('category') }
+                                className='hidden' 
+                            />
+
+                            <category.icon size={20} />
+
+                            {category.label}
+
+                        </label>
+
+                    ) )
+                }
+
+            </article>
+
+            {/*            
+                <article className="flex items-center gap-2 mt-1">
+
+                {
+                    categoryIcon 
+                    && 
+                    <categoryIcon.icon size={18} className='text-gray-900' />
+                }
+                
+                <select id="category" {...register('category')} className="mt-1 w-full border rounded px-3 py-2 text-sm">
+                    
+                    <option value="">Elegir categoría...</option>
+                    
+
+                    {CATEGORIES.map( (category) => (
+
+                        <option key={category.value} value={category.value} >{category.label}</option>
+
+                    ) ) }
+                
+                </select>
+                </article>
+            */}
             {errors.category && <p className="text-red-600 text-xs mt-1">{errors.category.message}</p>}
         </div>
 
@@ -97,9 +153,9 @@ export function ProductForm() {
                 className="mt-1 w-full border rounded px-3 py-2 text-sm"
             >
                 <option value="">Elegir importancia...</option>
-                <option value="High">Alta</option>
-                <option value="Medium">Media</option>
-                <option value="Low">Baja</option>
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
             </select>
             {errors.importance && <p className="text-red-600 text-xs mt-1">{errors.importance.message}</p>}
         </div>
