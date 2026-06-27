@@ -1,37 +1,38 @@
-import { useWarrantyStore } from "../../warranty/store";
-import { useProductStore } from "../store"
 import type { importanceT } from "../types";
+import type { ProductRow } from "../hooks/useProducts";
+import { CATEGORIES } from "../categories";
 
-export default function ProductsTable () {
+interface ProductsTableProps {
+  productsWithWarranty: ProductRow[]
+  totalProductCount: number
+}
 
-    const products = useProductStore( (state) => state.products ) ;
-
-    const warranties = useWarrantyStore( (state) => state.warranties ) ;
-
+export default function ProductsTable ({ productsWithWarranty, totalProductCount }: ProductsTableProps) {
 
     const importanceLabel : importanceT = {
 
         High: "Alta",
+
         Medium: "Media",
+
         Low: "Baja"
 
     }
 
-
-    // Join por id
-
-    const rows = products.map( (product) => ({      // return { <object> } implicito
-
-        ...product,
-        warranty: warranties.find( (warranty) => warranty.id === product.id )
-
-    }) )
+    const getCategoryLabel = (categoryValue: string): string => {
+        const foundCategory = CATEGORIES.find(
+            (category) => category.value === categoryValue
+        )
+        return foundCategory?.label ?? categoryValue
+    }
 
     return(
     
         <section className="p-4 overflow-x-auto">
 
             <table className="w-full text-sm border-collapse">
+
+                <caption className="sr-only">Listado de productos con garantía</caption>
 
                 <thead>
                     <tr className="bg-gray-100 text-left">
@@ -47,24 +48,24 @@ export default function ProductsTable () {
                 </thead>
 
                 <tbody>
-                    {rows.map((row) => (
+                    {productsWithWarranty.map((productRow) => (
 
-                        <tr key={row.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-2 border">{row.name}</td>
-                            <td className="px-4 py-2 border">{row.category}</td>
-                            <td className="px-4 py-2 border">${row.price}</td>
-                            <td className="px-4 py-2 border">{ importanceLabel[row.importance] }</td>
-                            <td className="px-4 py-2 border">{row.purchaseDate}</td>
+                        <tr key={productRow.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-2 border">{productRow.name}</td>
+                            <td className="px-4 py-2 border">{getCategoryLabel(productRow.category)}</td>
+                            <td className="px-4 py-2 border">${productRow.price}</td>
+                            <td className="px-4 py-2 border">{ importanceLabel[productRow.importance] }</td>
+                            <td className="px-4 py-2 border">{productRow.purchaseDate}</td>
                             <td className="px-4 py-2 border">
-                                {row.warranty?.expiryDate
-                                    ? new Date(row.warranty.expiryDate).toLocaleDateString()
+                                {productRow.warranty?.expiryDate
+                                    ? new Date(productRow.warranty.expiryDate).toLocaleDateString()
                                     : "—"}
                             </td>
                             <td className="px-4 py-2 border">
-                                {row.warranty?.remainingMonths ?? "—"}
+                                {productRow.warranty?.remainingMonths ?? "—"}
                             </td>
                             <td className="px-4 py-2 border">
-                                {row.warranty?.warrantyTerm ?? "—"}
+                                {productRow.warranty?.warrantyTerm ?? "—"}
                             </td>
                         </tr>
 
@@ -73,8 +74,12 @@ export default function ProductsTable () {
 
             </table>
 
-            {rows.length === 0 && (
-                <p className="text-center text-gray-400 mt-4">No hay productos registrados.</p>
+            {productsWithWarranty.length === 0 && (
+                <p className="text-center text-gray-400 mt-4">
+                    {totalProductCount === 0
+                        ? "No hay productos registrados."
+                        : "No se encontraron productos con los filtros actuales."}
+                </p>
             )}
 
         </section>
