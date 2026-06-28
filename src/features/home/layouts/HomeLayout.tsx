@@ -7,7 +7,7 @@ export default function HomeLayout() {
 
     return (
 
-        <main className="min-h-screen bg-slate-100">
+        <main className="min-h-screen bg-[#F6F8FC]">
 
             <div className="flex">
 
@@ -17,10 +17,8 @@ export default function HomeLayout() {
 
                     <Topbar />
 
-                    <div className="p-8">
-
+                    <div className="p-6 lg:p-10">
                         <Outlet />
-
                     </div>
 
                 </section>
