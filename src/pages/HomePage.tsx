@@ -3,6 +3,7 @@ import ProductFilters from "../features/products/components/ProductFilters"
 import ProductsTable from "../features/products/components/ProductsTable";
 import { seedTestData, clearAllData } from "../features/products/utils/seedData"
 import { useProductStore } from "../features/products/store"
+import SummaryCards from "../features/home/components/SummaryCards";
 
 export default function HomePage () {
 
@@ -20,6 +21,7 @@ export default function HomePage () {
 
     return(
         <main>
+            <SummaryCards />
 
            <h2>Garantias para tus productos</h2> 
 
