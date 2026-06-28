@@ -1,35 +1,34 @@
-import { NavLink, Outlet } from "react-router-dom" ;
-import { ROUTES } from "../../../shared/utils/Routes";
+import { Outlet } from "react-router-dom";
 
+import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar";
 
-export default function HomeLayout () {
+export default function HomeLayout() {
 
     return (
 
-        <section>
+        <main className="min-h-screen bg-slate-100">
 
-            <header>
+            <div className="flex">
 
-                <nav>
+                <Sidebar />
 
-                    <article>
-                        <NavLink to={ROUTES.HOME} >Inicio</NavLink>
-                    </article>
+                <section className="flex-1 flex flex-col">
 
-                    <article>
-                        <NavLink to={ROUTES.RECORD_PRODUCT} > Record a Product </NavLink>
-                    </article>
+                    <Topbar />
 
-                </nav>
+                    <div className="p-8">
 
-            </header>
+                        <Outlet />
 
-            <br /> <br />
+                    </div>
 
-            <Outlet/>
+                </section>
 
-        </section>
+            </div>
 
-    )
+        </main>
+
+    );
 
 }
