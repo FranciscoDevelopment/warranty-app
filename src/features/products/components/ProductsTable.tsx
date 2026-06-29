@@ -62,6 +62,23 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
         )
     }
 
+    const getExpiryDateInfo = (expiryDate?: string) => {
+        const status = getWarrantyStatus(expiryDate)
+
+        if (!status) return null
+
+        const daysText = status.days === 1 ? "día" : "días"
+        const messageByVariant = {
+            expired: { text: `Vencida hace ${status.days} ${daysText}`, className: "text-red-600" },
+            "expiring-soon": { text: `En ${status.days} ${daysText}`, className: "text-amber-600" },
+            valid: { text: `En ${status.days} ${daysText}`, className: "text-green-600" }
+        }
+
+        const config = messageByVariant[status.variant]
+
+        return <div className={`text-xs font-medium ${config.className}`}>{config.text}</div>
+    }
+
     return(
     
         <section className="mb-8 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -111,9 +128,12 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                             <td className="px-6 py-4">{ importanceLabel[productRow.importance] }</td>
                             <td className="px-6 py-4">{productRow.purchaseDate}</td>
                             <td className="px-6 py-4">
-                                {productRow.warranty?.expiryDate
-                                    ? new Date(productRow.warranty.expiryDate).toLocaleDateString()
-                                    : "—"}
+                                <div>
+                                    {productRow.warranty?.expiryDate
+                                        ? new Date(productRow.warranty.expiryDate).toLocaleDateString()
+                                        : "—"}
+                                </div>
+                                {productRow.warranty?.expiryDate && getExpiryDateInfo(productRow.warranty.expiryDate)}
                             </td>
                             <td className="px-4 py-2">
                                 {getStatusBadge(productRow.warranty?.expiryDate)}
