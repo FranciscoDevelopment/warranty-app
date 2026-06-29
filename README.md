@@ -8,10 +8,10 @@ vencer y cuáles ya caducaron.
 | Integrante | Desafío | Rama |
 |------------|---------|------|
 | Facundo Ferreyra   | D1 - Base | feature/d1-base |
-| Sin selección   | D2 - Cálculo | feature/d2-calculo |
-| Sin selección   | D3 - Clasificación visual | feature/d3-clasificacion |
-| Sin selección   | D4 - Filtros | feature/d4-filtros |
-| Sin selección   | D5 - Adjunto | feature/d5-adjunto |
+| Francisco Chiressi   | D2 - Cálculo | feature/d2-calculo |
+| Camila Ferro   | D3 - Clasificación visual | feature/d3-clasificacion |
+| Luca Almiron   | D4 - Filtros | feature/d4-filtros |
+| Irina D'Andrea   | D5 - Adjunto | feature/d5-adjunto |
 
 ## Tecnologías
 
