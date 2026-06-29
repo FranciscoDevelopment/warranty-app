@@ -3,6 +3,7 @@ import ProductFilters from "../features/products/components/ProductFilters"
 import ProductsTable from "../features/products/components/ProductsTable";
 import { seedTestData, clearAllData } from "../features/products/utils/seedData"
 import { useProductStore } from "../features/products/store"
+import SummaryCards from "../features/home/components/SummaryCards";
 
 export default function HomePage () {
 
@@ -19,25 +20,10 @@ export default function HomePage () {
     } = useProductFilters()
 
     return(
-        <main>
+        <main className="px-4 sm:px-8 py-6 sm:py-8 max-w-7xl mx-auto">
+            <SummaryCards />
 
-           <h2>Garantias para tus productos</h2> 
-
-            {totalProducts === 0 ? (
-                <button
-                    onClick={seedTestData}
-                    className="ml-4 px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors"
-                >
-                    Cargar datos de prueba
-                </button>
-            ) : (
-                <button
-                    onClick={clearAllData}
-                    className="ml-4 px-4 py-2 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors"
-                >
-                    Limpiar todos los datos
-                </button>
-            )}
+           <h2 className="text-xl sm:text-2xl font-semibold text-slate-800 mb-6">Garantías para tus productos</h2> 
 
             <ProductFilters
                 searchQuery={searchQuery}
@@ -45,6 +31,8 @@ export default function HomePage () {
                 categoryFilter={categoryFilter}
                 onCategoryChange={setCategoryFilter}
                 onReset={resetFilters}
+                onClearAllData={totalProducts === 0 ? seedTestData : clearAllData}
+                hasProducts={totalProducts > 0}
                 totalProductCount={totalProductCount}
                 filteredProductCount={filteredProductCount}
                 activeFilterCount={activeFilterCount}

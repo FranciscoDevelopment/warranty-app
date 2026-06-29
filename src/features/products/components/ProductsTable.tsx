@@ -1,6 +1,7 @@
 import type { importanceT } from "../types";
 import type { ProductRow } from "../hooks/useProducts";
 import { CATEGORIES } from "../categories";
+import { getWarrantyStatus } from "../../warranty/utils/warrantyStatus.js";
 
 interface ProductsTableProps {
   productsWithWarranty: ProductRow[]
@@ -26,56 +27,129 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
         return foundCategory?.label ?? categoryValue
     }
 
+    const getRowClasses = (expiryDate?: string) => {
+        const status = getWarrantyStatus(expiryDate)
+
+        switch (status?.variant) {
+            case "valid":
+                return "bg-green-50/70"
+            case "expiring-soon":
+                return "bg-amber-50/70"
+            case "expired":
+                return "bg-red-50/70"
+            default:
+                return ""
+        }
+    }
+
+    const getStatusBadge = (expiryDate?: string) => {
+        const status = getWarrantyStatus(expiryDate)
+
+        if (!status) return null
+
+        const statusLabel = {
+            expired: { text: "Vencido", className: "bg-red-100 text-red-700 border border-red-200" },
+            "expiring-soon": { text: "Próximo a vencer", className: "bg-amber-100 text-amber-700 border border-amber-200" },
+            valid: { text: "Vigente", className: "bg-green-100 text-green-700 border border-green-200" }
+        }
+
+        const config = statusLabel[status.variant]
+
+        return (
+            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${config.className}`}>
+                {config.text}
+            </span>
+        )
+    }
+
+    const getExpiryDateInfo = (expiryDate?: string) => {
+        const status = getWarrantyStatus(expiryDate)
+
+        if (!status) return null
+
+        const daysText = status.days === 1 ? "día" : "días"
+        const messageByVariant = {
+            expired: { text: `Vencida hace ${status.days} ${daysText}`, className: "text-red-600" },
+            "expiring-soon": { text: `En ${status.days} ${daysText}`, className: "text-amber-600" },
+            valid: { text: `En ${status.days} ${daysText}`, className: "text-green-600" }
+        }
+
+        const config = messageByVariant[status.variant]
+
+        return <div className={`text-xs font-medium ${config.className}`}>{config.text}</div>
+    }
+
     return(
     
-        <section className="p-4 overflow-x-auto">
+        <section className="mb-8 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="flex flex-col gap-2 border-b border-slate-200 px-4 py-3 sm:px-6 sm:py-4">
 
-            <table className="w-full text-sm border-collapse">
+    <div>
+
+        <h2 className="text-base sm:text-lg font-semibold text-slate-800">
+            Productos registrados
+        </h2>
+
+        <p className="text-xs sm:text-sm text-slate-500">
+            Listado de todas las garantías
+        </p>
+
+    </div>
+
+</div>
+            <table className="w-full text-xs sm:text-sm">
 
                 <caption className="sr-only">Listado de productos con garantía</caption>
 
                 <thead>
-                    <tr className="bg-gray-100 text-left">
-                        <th className="px-4 py-2 border">Producto</th>
-                        <th className="px-4 py-2 border">Categoría</th>
-                        <th className="px-4 py-2 border">Precio</th>
-                        <th className="px-4 py-2 border">Importancia</th>
-                        <th className="px-4 py-2 border">Fecha compra</th>
-                        <th className="px-4 py-2 border">Vencimiento</th>
-                        <th className="px-4 py-2 border">Meses restantes</th>
-                        <th className="px-4 py-2 border max-w-26 whitespace-normal">Estimación del plazo de cobertura</th>
+                    <tr className="border-b border-slate-200 bg-slate-50 text-left text-slate-600 uppercase text-xs tracking-wide">
+                        <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Producto</th>
+                        <th className="hidden md:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Categoría</th>
+                        <th className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Precio</th>
+                        <th className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Importancia</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Compra</th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Vencimiento</th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Estado</th>
+                        <th className="hidden xl:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Plazo</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {productsWithWarranty.map((productRow) => (
+                    {productsWithWarranty.map((productRow) => {
+                        const rowClasses = getRowClasses(productRow.warranty?.expiryDate)
 
-                        <tr key={productRow.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-2 border">{productRow.name}</td>
-                            <td className="px-4 py-2 border">{getCategoryLabel(productRow.category)}</td>
-                            <td className="px-4 py-2 border">${productRow.price}</td>
-                            <td className="px-4 py-2 border">{ importanceLabel[productRow.importance] }</td>
-                            <td className="px-4 py-2 border">{productRow.purchaseDate}</td>
-                            <td className="px-4 py-2 border">
-                                {productRow.warranty?.expiryDate
-                                    ? new Date(productRow.warranty.expiryDate).toLocaleDateString()
-                                    : "—"}
+                        return (
+                        <tr key={productRow.id}
+                        className={`border-b border-slate-100 transition-colors hover:bg-slate-50 ${rowClasses}`}
+                        >
+                            <td className="px-2 sm:px-4 py-2 sm:py-4 font-medium text-slate-900 max-w-xs truncate">{productRow.name}</td>
+                            <td className="hidden md:table-cell px-2 sm:px-4 py-2 sm:py-4">{getCategoryLabel(productRow.category)}</td>
+                            <td className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4">${productRow.price}</td>
+                            <td className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4">{ importanceLabel[productRow.importance] }</td>
+                            <td className="hidden sm:table-cell px-2 sm:px-4 py-2 sm:py-4 text-xs">{productRow.purchaseDate}</td>
+                            <td className="px-2 sm:px-4 py-2 sm:py-4">
+                                <div className="text-xs sm:text-sm">
+                                    {productRow.warranty?.expiryDate
+                                        ? new Date(productRow.warranty.expiryDate).toLocaleDateString()
+                                        : "—"}
+                                </div>
+                                {productRow.warranty?.expiryDate && <div className="mt-1">{getExpiryDateInfo(productRow.warranty.expiryDate)}</div>}
                             </td>
-                            <td className="px-4 py-2 border">
-                                {productRow.warranty?.remainingMonths ?? "—"}
+                            <td className="px-2 sm:px-4 py-2 sm:py-4">
+                                {getStatusBadge(productRow.warranty?.expiryDate)}
                             </td>
-                            <td className="px-4 py-2 border">
+                            <td className="hidden xl:table-cell px-2 sm:px-4 py-2 sm:py-4 text-xs">
                                 {productRow.warranty?.warrantyTerm ?? "—"}
                             </td>
                         </tr>
-
-                    ))}
+                        )
+                    })}
                 </tbody>
 
             </table>
 
             {productsWithWarranty.length === 0 && (
-                <p className="text-center text-gray-400 mt-4">
+                <p className="py-8 text-center text-slate-400">
                     {totalProductCount === 0
                         ? "No hay productos registrados."
                         : "No se encontraron productos con los filtros actuales."}
