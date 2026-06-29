@@ -82,35 +82,35 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
     return(
     
         <section className="mb-8 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+            <div className="flex flex-col gap-2 border-b border-slate-200 px-4 py-3 sm:px-6 sm:py-4">
 
     <div>
 
-        <h2 className="text-lg font-semibold text-slate-800">
+        <h2 className="text-base sm:text-lg font-semibold text-slate-800">
             Productos registrados
         </h2>
 
-        <p className="text-sm text-slate-500">
+        <p className="text-xs sm:text-sm text-slate-500">
             Listado de todas las garantías
         </p>
 
     </div>
 
 </div>
-            <table className="w-full min-w-[900px] text-sm">
+            <table className="w-full text-xs sm:text-sm">
 
                 <caption className="sr-only">Listado de productos con garantía</caption>
 
                 <thead>
                     <tr className="border-b border-slate-200 bg-slate-50 text-left text-slate-600 uppercase text-xs tracking-wide">
-                        <th className="px-6 py-4 font-semibold">Producto</th>
-                        <th className="px-6 py-4 font-semibold">Categoría</th>
-                        <th className="px-6 py-4 font-semibold">Precio</th>
-                        <th className="px-6 py-4 font-semibold">Importancia</th>
-                        <th className="px-6 py-4 font-semibold">Fecha compra</th>
-                        <th className="px-6 py-4 font-semibold">Vencimiento</th>
-                        <th className="px-6 py-4 font-semibold">Estado</th>
-                        <th className="px-6 py-4 font-semibold">Estimación del plazo de cobertura</th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Producto</th>
+                        <th className="hidden md:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Categoría</th>
+                        <th className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Precio</th>
+                        <th className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Importancia</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Compra</th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Vencimiento</th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Estado</th>
+                        <th className="hidden xl:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Plazo</th>
                     </tr>
                 </thead>
 
@@ -122,23 +122,23 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                         <tr key={productRow.id}
                         className={`border-b border-slate-100 transition-colors hover:bg-slate-50 ${rowClasses}`}
                         >
-                            <td className="px-6 py-4">{productRow.name}</td>
-                            <td className="px-6 py-4">{getCategoryLabel(productRow.category)}</td>
-                            <td className="px-6 py-4">${productRow.price}</td>
-                            <td className="px-6 py-4">{ importanceLabel[productRow.importance] }</td>
-                            <td className="px-6 py-4">{productRow.purchaseDate}</td>
-                            <td className="px-6 py-4">
-                                <div>
+                            <td className="px-2 sm:px-4 py-2 sm:py-4 font-medium text-slate-900 max-w-xs truncate">{productRow.name}</td>
+                            <td className="hidden md:table-cell px-2 sm:px-4 py-2 sm:py-4">{getCategoryLabel(productRow.category)}</td>
+                            <td className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4">${productRow.price}</td>
+                            <td className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4">{ importanceLabel[productRow.importance] }</td>
+                            <td className="hidden sm:table-cell px-2 sm:px-4 py-2 sm:py-4 text-xs">{productRow.purchaseDate}</td>
+                            <td className="px-2 sm:px-4 py-2 sm:py-4">
+                                <div className="text-xs sm:text-sm">
                                     {productRow.warranty?.expiryDate
                                         ? new Date(productRow.warranty.expiryDate).toLocaleDateString()
                                         : "—"}
                                 </div>
-                                {productRow.warranty?.expiryDate && getExpiryDateInfo(productRow.warranty.expiryDate)}
+                                {productRow.warranty?.expiryDate && <div className="mt-1">{getExpiryDateInfo(productRow.warranty.expiryDate)}</div>}
                             </td>
-                            <td className="px-4 py-2">
+                            <td className="px-2 sm:px-4 py-2 sm:py-4">
                                 {getStatusBadge(productRow.warranty?.expiryDate)}
                             </td>
-                            <td className="px-4 py-2">
+                            <td className="hidden xl:table-cell px-2 sm:px-4 py-2 sm:py-4 text-xs">
                                 {productRow.warranty?.warrantyTerm ?? "—"}
                             </td>
                         </tr>

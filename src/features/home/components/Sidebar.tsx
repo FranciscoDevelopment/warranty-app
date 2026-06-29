@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     House,
     Package,
@@ -6,6 +7,8 @@ import {
     Settings,
     ShieldCheck,
     UserCircle,
+    Menu,
+    X,
 } from "lucide-react";
 
 import SidebarItem from "./SidebarItem";
@@ -13,8 +16,36 @@ import SidebarItem from "./SidebarItem";
 import { ROUTES } from "../../../shared/utils/Routes";
 
 export default function Sidebar() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleMenu = () => setIsOpen(!isOpen);
+    const closeMenu = () => setIsOpen(false);
+
     return (
-        <aside className="hidden lg:flex w-72 bg-[#0E2F66] text-white flex-col justify-between">
+        <>
+            {/* Botón hamburguesa - visible solo en móvil */}
+            <button
+                onClick={toggleMenu}
+                className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white border border-slate-200 shadow-sm hover:bg-slate-50 transition"
+                aria-label="Abrir menú"
+            >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+
+            {/* Overlay - visible solo cuando el menú está abierto en móvil */}
+            {isOpen && (
+                <div
+                    className="lg:hidden fixed inset-0 bg-black/50 z-40"
+                    onClick={closeMenu}
+                />
+            )}
+
+            {/* Sidebar - desktop siempre visible, móvil como drawer */}
+            <aside
+                className={`fixed lg:relative lg:flex w-72 bg-[#0E2F66] text-white flex-col justify-between z-40 transition-all duration-300 h-screen lg:h-auto
+                    ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+                `}
+            >
 
             <div>
 
@@ -46,21 +77,25 @@ export default function Sidebar() {
                         to={ROUTES.HOME}
                         icon={House}
                         label="Dashboard"
+                        onClick={closeMenu}
                     />
 
                     <SidebarItem
                         to={ROUTES.HOME}
                         icon={Package}
                         label="Productos"
+                        onClick={closeMenu}
                     />
 
                     <SidebarItem
                         to={ROUTES.RECORD_PRODUCT}
                         icon={PlusCircle}
                         label="Agregar producto"
+                        onClick={closeMenu}
                     />
 
                     <button
+                        onClick={closeMenu}
                         className="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-200 hover:bg-blue-800 transition-colors"
                     >
                         <Bell size={20} />
@@ -68,6 +103,7 @@ export default function Sidebar() {
                     </button>
 
                     <button
+                        onClick={closeMenu}
                         className="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-200 hover:bg-blue-800 transition-colors"
                     >
                         <Settings size={20} />
@@ -101,5 +137,6 @@ export default function Sidebar() {
             </div>
 
         </aside>
+        </>
     );
 }

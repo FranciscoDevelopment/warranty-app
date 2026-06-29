@@ -20,10 +20,10 @@ export default function HomePage () {
     } = useProductFilters()
 
     return(
-        <main>
+        <main className="px-4 sm:px-8 py-6 sm:py-8 max-w-7xl mx-auto">
             <SummaryCards />
 
-           <h2>Garantias para tus productos</h2> 
+           <h2 className="text-xl sm:text-2xl font-semibold text-slate-800 mb-6">Garantías para tus productos</h2> 
 
             <ProductFilters
                 searchQuery={searchQuery}
