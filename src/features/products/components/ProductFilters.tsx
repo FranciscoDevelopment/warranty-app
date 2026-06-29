@@ -7,6 +7,8 @@ interface ProductFiltersProps {
   categoryFilter: string
   onCategoryChange: (value: string) => void
   onReset: () => void
+  onClearAllData: () => void
+  hasProducts: boolean
   totalProductCount: number
   filteredProductCount: number
   activeFilterCount: number
@@ -18,6 +20,8 @@ export default function ProductFilters({
   categoryFilter,
   onCategoryChange,
   onReset,
+  onClearAllData,
+  hasProducts,
   totalProductCount,
   filteredProductCount,
   activeFilterCount,
@@ -76,34 +80,60 @@ export default function ProductFilters({
         ))}
       </select>
     </div>
-      <span className="text-sm font-medium text-slate-500">
-        Mostrando {filteredProductCount} de {totalProductCount} productos
-      </span>
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-medium text-slate-500">
+            Mostrando {filteredProductCount} de {totalProductCount} productos
+          </span>
 
-      {activeFilterCount > 0 && (
-        <button
-          onClick={onReset}
-          className="
-          flex
-          items-center
-          gap-2
-          rounded-xl
-          border
-          border-red-200
-          bg-red-50
-          px-4
-          py-2
-          text-sm
-          font-medium
-          text-red-600
-          transition
-          hover:bg-red-100
-          "
-        >
-          <FilterX className="w-4 h-4" />
-          Limpiar filtros
-        </button>
-      )}
+          <button
+            onClick={onClearAllData}
+            className={`
+            flex
+            w-fit
+            items-center
+            gap-2
+            rounded-xl
+            border
+            px-4
+            py-2
+            text-sm
+            font-medium
+            transition
+            ${hasProducts
+              ? 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100'
+              : 'border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100'}
+            `}
+          >
+            {hasProducts ? 'Limpiar todos los datos' : 'Cargar datos de prueba'}
+          </button>
+        </div>
+
+        {activeFilterCount > 0 && (
+          <button
+            onClick={onReset}
+            className="
+            flex
+            items-center
+            gap-2
+            rounded-xl
+            border
+            border-red-200
+            bg-red-50
+            px-4
+            py-2
+            text-sm
+            font-medium
+            text-red-600
+            transition
+            hover:bg-red-100
+            "
+          >
+            <FilterX className="w-4 h-4" />
+            Limpiar filtros
+          </button>
+        )}
+      </div>
     </section>
   )
 }

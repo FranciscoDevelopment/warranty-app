@@ -1,6 +1,7 @@
 import type { importanceT } from "../types";
 import type { ProductRow } from "../hooks/useProducts";
 import { CATEGORIES } from "../categories";
+import { getWarrantyStatus } from "../../warranty/utils/warrantyStatus.js";
 
 interface ProductsTableProps {
   productsWithWarranty: ProductRow[]
@@ -24,6 +25,41 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
             (category) => category.value === categoryValue
         )
         return foundCategory?.label ?? categoryValue
+    }
+
+    const getRowClasses = (expiryDate?: string) => {
+        const status = getWarrantyStatus(expiryDate)
+
+        switch (status?.variant) {
+            case "valid":
+                return "bg-green-50/70"
+            case "expiring-soon":
+                return "bg-amber-50/70"
+            case "expired":
+                return "bg-red-50/70"
+            default:
+                return ""
+        }
+    }
+
+    const getStatusBadge = (expiryDate?: string) => {
+        const status = getWarrantyStatus(expiryDate)
+
+        if (!status) return null
+
+        const statusLabel = {
+            expired: { text: "Vencido", className: "bg-red-100 text-red-700 border border-red-200" },
+            "expiring-soon": { text: "Próximo a vencer", className: "bg-amber-100 text-amber-700 border border-amber-200" },
+            valid: { text: "Vigente", className: "bg-green-100 text-green-700 border border-green-200" }
+        }
+
+        const config = statusLabel[status.variant]
+
+        return (
+            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${config.className}`}>
+                {config.text}
+            </span>
+        )
     }
 
     return(
@@ -56,16 +92,18 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                         <th className="px-6 py-4 font-semibold">Importancia</th>
                         <th className="px-6 py-4 font-semibold">Fecha compra</th>
                         <th className="px-6 py-4 font-semibold">Vencimiento</th>
-                        <th className="px-6 py-4 font-semibold">Meses restantes</th>
+                        <th className="px-6 py-4 font-semibold">Estado</th>
                         <th className="px-6 py-4 font-semibold">Estimación del plazo de cobertura</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {productsWithWarranty.map((productRow) => (
+                    {productsWithWarranty.map((productRow) => {
+                        const rowClasses = getRowClasses(productRow.warranty?.expiryDate)
 
+                        return (
                         <tr key={productRow.id}
-                        className="border-b border-slate-100 transition-colors hover:bg-slate-50"
+                        className={`border-b border-slate-100 transition-colors hover:bg-slate-50 ${rowClasses}`}
                         >
                             <td className="px-6 py-4">{productRow.name}</td>
                             <td className="px-6 py-4">{getCategoryLabel(productRow.category)}</td>
@@ -78,14 +116,14 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                                     : "—"}
                             </td>
                             <td className="px-4 py-2">
-                                {productRow.warranty?.remainingMonths ?? "—"}
+                                {getStatusBadge(productRow.warranty?.expiryDate)}
                             </td>
                             <td className="px-4 py-2">
                                 {productRow.warranty?.warrantyTerm ?? "—"}
                             </td>
                         </tr>
-
-                    ))}
+                        )
+                    })}
                 </tbody>
 
             </table>
