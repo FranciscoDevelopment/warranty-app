@@ -14,7 +14,7 @@ export function ProductForm() {
     const evaluateWarranty = useWarrantyStore( (state) => state.evaluateWarranty ) ;
 
 
-    const { register, handleSubmit, watch , reset, formState: { errors } } = useForm<productFormDataT>({
+    const { register, handleSubmit, watch ,setValue, reset, formState: { errors } } = useForm<productFormDataT>({
         resolver: zodResolver(productSchema),
     })
 
@@ -158,6 +158,25 @@ export function ProductForm() {
                 <option value="High">Baja</option>
             </select>
             {errors.importance && <p className="text-red-600 text-xs mt-1">{errors.importance.message}</p>}
+        </div>
+        <div>
+            <label htmlFor="receipt" className="text-sm font-medium">Comprobante de compra</label>
+            <input
+                id="receipt"
+                type="file"
+                accept="image/*,application/pdf"
+                onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (!file) return
+                    const reader = new FileReader()
+                    reader.onload = () => setValue('receipt', reader.result as string)
+                    reader.readAsDataURL(file)
+                }}
+                className="mt-1 w-full border rounded px-3 py-2 text-sm"
+            />
+            {watch('receipt') && (
+                <img src={watch('receipt')} alt="Vista previa del comprobante" className="mt-2 h-16 rounded border" />
+            )}
         </div>
 
 

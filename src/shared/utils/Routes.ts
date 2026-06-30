@@ -4,6 +4,7 @@ export const ROUTES = {
 
     RECORD_PRODUCT: "record-product",
 
-    EDIT_WARRANTY: "edit-warranty"
+    EDIT_WARRANTY: "edit-warranty",
 
+REMINDERS: "reminders"
 } as const
