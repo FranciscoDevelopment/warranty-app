@@ -106,7 +106,7 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                         <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Producto</th>
                         <th className="hidden md:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Categoría</th>
                         <th className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Precio</th>
-                        <th className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Importancia</th>
+
                         <th className="hidden sm:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Compra</th>
                         <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Vencimiento</th>
                         <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Estado</th>
@@ -125,7 +125,7 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                             <td className="px-2 sm:px-4 py-2 sm:py-4 font-medium text-slate-900 max-w-xs truncate">{productRow.name}</td>
                             <td className="hidden md:table-cell px-2 sm:px-4 py-2 sm:py-4">{getCategoryLabel(productRow.category)}</td>
                             <td className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4">${productRow.price}</td>
-                            <td className="hidden lg:table-cell px-2 sm:px-4 py-2 sm:py-4">{ importanceLabel[productRow.importance] }</td>
+
                             <td className="hidden sm:table-cell px-2 sm:px-4 py-2 sm:py-4 text-xs">{productRow.purchaseDate}</td>
                             <td className="px-2 sm:px-4 py-2 sm:py-4">
                                 <div className="text-xs sm:text-sm">
