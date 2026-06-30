@@ -153,9 +153,9 @@ export function ProductForm() {
                 className="mt-1 w-full border rounded px-3 py-2 text-sm"
             >
                 <option value="">Elegir importancia...</option>
-                <option value="Alta">Alta</option>
-                <option value="Media">Media</option>
-                <option value="Baja">Baja</option>
+                <option value="Low">Alta</option>
+                <option value="Medium">Media</option>
+                <option value="High">Baja</option>
             </select>
             {errors.importance && <p className="text-red-600 text-xs mt-1">{errors.importance.message}</p>}
         </div>
