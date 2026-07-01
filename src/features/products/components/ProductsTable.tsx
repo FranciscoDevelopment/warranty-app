@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import type { ProductRow } from "../hooks/useProducts";
 import { CATEGORIES } from "../categories";
 import { getWarrantyStatus } from "../../warranty/utils/warrantyStatus.js";
@@ -8,6 +9,20 @@ interface ProductsTableProps {
 }
 
 export default function ProductsTable ({ productsWithWarranty, totalProductCount }: ProductsTableProps) {
+    const PRODUCTS_PER_PAGE = 6;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.max(1, Math.ceil(productsWithWarranty.length / PRODUCTS_PER_PAGE));
+
+    useEffect(() => {
+        setCurrentPage((previousPage) => (previousPage > totalPages ? 1 : previousPage));
+    }, [productsWithWarranty.length, totalPages]);
+
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+
+    const visibleProducts = useMemo(() => {
+        return productsWithWarranty.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+    }, [productsWithWarranty, startIndex]);
 
     const getCategoryLabel = (categoryValue: string): string => {
         const foundCategory = CATEGORIES.find(
@@ -105,7 +120,7 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                 </thead>
 
                 <tbody>
-                    {productsWithWarranty.map((productRow) => {
+                    {visibleProducts.map((productRow) => {
                         const rowClasses = getRowClasses(productRow.warranty?.expiryDate)
 
                         return (
@@ -150,6 +165,38 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                 </tbody>
 
             </table>
+
+            {productsWithWarranty.length > PRODUCTS_PER_PAGE && (
+                <div className="flex flex-col gap-3 border-t border-slate-200 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                    <p className="text-sm text-slate-600">
+                        Mostrando {productsWithWarranty.length === 0 ? 0 : startIndex + 1}-{Math.min(startIndex + PRODUCTS_PER_PAGE, productsWithWarranty.length)} de {productsWithWarranty.length} productos
+                    </p>
+
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+                            disabled={currentPage === 1}
+                            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            Atrás
+                        </button>
+
+                        <span className="text-sm text-slate-600">
+                            Página {currentPage} de {totalPages}
+                        </span>
+
+                        <button
+                            type="button"
+                            onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+                            disabled={currentPage === totalPages}
+                            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            Siguiente
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {productsWithWarranty.length === 0 && (
                 <p className="py-8 text-center text-slate-400">
