@@ -27,7 +27,7 @@ export default function Sidebar() {
             <button
                 onClick={toggleMenu}
                 className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white border border-slate-200 shadow-sm hover:bg-slate-50 transition"
-                aria-label="Abrir menú"
+                aria-label="Abrir: menú"
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -94,13 +94,12 @@ export default function Sidebar() {
                         onClick={closeMenu}
                     />
 
-                    <button
-                        onClick={closeMenu}
-                        className="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-200 hover:bg-blue-800 transition-colors"
-                    >
-                        <Bell size={20} />
-                        Recordatorios
-                    </button>
+                    <SidebarItem
+    to={ROUTES.REMINDERS}
+    icon={Bell}
+    label="Recordatorios"
+    onClick={closeMenu}
+/>
 
                     <button
                         onClick={closeMenu}

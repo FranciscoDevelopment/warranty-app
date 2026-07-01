@@ -111,6 +111,7 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                         <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Vencimiento</th>
                         <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Estado</th>
                         <th className="hidden xl:table-cell px-2 sm:px-4 py-2 sm:py-4 font-semibold">Plazo</th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-4 font-semibold">Comprobante</th>
                     </tr>
                 </thead>
 
@@ -141,6 +142,19 @@ export default function ProductsTable ({ productsWithWarranty, totalProductCount
                             <td className="hidden xl:table-cell px-2 sm:px-4 py-2 sm:py-4 text-xs">
                                 {productRow.warranty?.warrantyTerm ?? "—"}
                             </td>
+                            <td className="px-2 sm:px-4 py-2 sm:py-4">
+                            {productRow.receipt ? (
+                                <a href={productRow.receipt} target="_blank" rel="noopener noreferrer">
+                                    <img
+                                        src={productRow.receipt}
+                                        alt={`Comprobante de ${productRow.name}`}
+                                        className="h-10 w-10 object-cover rounded border cursor-pointer hover:opacity-80"
+                                    />
+                                </a>
+                            ) : (
+                                <span className="text-xs text-slate-400">Sin comprobante</span>
+                            )}
+                        </td>
                         </tr>
                         )
                     })}

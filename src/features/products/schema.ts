@@ -11,7 +11,9 @@ export const productSchema = z.object({
         z.number()
     ]
   ),
-  importance: z.enum( ["High", "Medium", "Low"] )
+  
+  importance: z.enum( ["High", "Medium", "Low"] ),
+  receipt: z.string().optional(),
 })
 
 export type productFormDataT = z.infer<typeof productSchema>
