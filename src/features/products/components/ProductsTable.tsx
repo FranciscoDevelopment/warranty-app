@@ -1,4 +1,3 @@
-import type { importanceT } from "../types";
 import type { ProductRow } from "../hooks/useProducts";
 import { CATEGORIES } from "../categories";
 import { getWarrantyStatus } from "../../warranty/utils/warrantyStatus.js";
@@ -9,16 +8,6 @@ interface ProductsTableProps {
 }
 
 export default function ProductsTable ({ productsWithWarranty, totalProductCount }: ProductsTableProps) {
-
-    const importanceLabel : importanceT = {
-
-        High: "Alta",
-
-        Medium: "Media",
-
-        Low: "Baja"
-
-    }
 
     const getCategoryLabel = (categoryValue: string): string => {
         const foundCategory = CATEGORIES.find(

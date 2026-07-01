@@ -1,5 +1,5 @@
 import { addMonths, differenceInMonths, parseISO } from "date-fns"
-import { warrantyTermReturn, type temporalThresholdsT, type warrantyTermT } from "../types"
+import { warrantyTermReturn, type temporalThresholdsT } from "../types"
 import type { productT, warrantyTermLabelT } from "../types"
 
 
