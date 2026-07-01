@@ -27,8 +27,8 @@ React 19 · TypeScript · Vite · Zustand · Tailwind CSS v4 · React Hook Form 
 
 ## Links
 
-- 🚀 Deploy: *Pendiente*
-- 📦 Repositorio: [REPO](https://github.com/Facu-Ferreyra/warranty-app)
+- 🚀 Deploy: (https://warranty-app-g7.vercel.app/)
+- 📦 Repositorio: [REPO](https://github.com/FranciscoDevelopment/warranty-app)
 
 ## Instalación local
 
