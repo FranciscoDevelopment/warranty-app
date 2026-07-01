@@ -18,10 +18,6 @@ export function ProductForm() {
         resolver: zodResolver(productSchema),
     })
 
-    const selectedCategory = watch('category') ;
-
-    const categoryIcon = CATEGORIES.find( (category) => category.value === selectedCategory ) ;
-
     const onSubmit = (data: productFormDataT) => {
 
         const newProduct = {...data, id: crypto.randomUUID() }
@@ -82,29 +78,6 @@ export function ProductForm() {
 
             </article>
 
-            {/*            
-                <article className="flex items-center gap-2 mt-1">
-
-                {
-                    categoryIcon 
-                    && 
-                    <categoryIcon.icon size={18} className='text-gray-900' />
-                }
-                
-                <select id="category" {...register('category')} className="mt-1 w-full border rounded px-3 py-2 text-sm">
-                    
-                    <option value="">Elegir categoría...</option>
-                    
-
-                    {CATEGORIES.map( (category) => (
-
-                        <option key={category.value} value={category.value} >{category.label}</option>
-
-                    ) ) }
-                
-                </select>
-                </article>
-            */}
             {errors.category && <p className="text-red-600 text-xs mt-1">{errors.category.message}</p>}
         </div>
 
